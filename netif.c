@@ -11,12 +11,12 @@
 
 #include "netif.h"
 
-char *get_ip_adr(char *if_name)
+unsigned char *get_ip_adr(char *if_name)
 {
     struct ifreq ifr;
     
     int sock;
-    char *src_ip;
+    unsigned char *src_ip;
     
     sock = socket(AF_INET, SOCK_DGRAM, 0);
     if(sock == -1)

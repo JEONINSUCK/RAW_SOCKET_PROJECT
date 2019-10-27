@@ -82,10 +82,10 @@ main (int argc, char **argv)
   src_ip = allocate_strmem (INET_ADDRSTRLEN);
 
   // Interface to send packet through.
-  strcpy (interface, "eth0");
+  strcpy (interface, "ens33");
 
   // Submit request for a socket descriptor to look up interface.
-  if ((sd = socket (AF_INET, SOCK_RAW, IPPROTO_RAW)) < 0) {
+  if ((sd = socket (AF_INET, SOCK_DGRAM, 0)) < 0) {
     perror ("socket() failed to get socket descriptor for using ioctl() ");
     exit (EXIT_FAILURE);
   }
@@ -122,10 +122,10 @@ main (int argc, char **argv)
   memset (dst_mac, 0xff, 6 * sizeof (uint8_t));
 
   // Source IPv4 address:  you need to fill this out
-  strcpy (src_ip, "192.168.1.116");
+  strcpy (src_ip, "172.16.255.131");
 
   // Destination URL or IPv4 address (must be a link-local node): you need to fill this out
-  strcpy (target, "192.168.1.1");
+  strcpy (target, "172.16.0.1");
 
   // Fill out hints for getaddrinfo().
   memset (&hints, 0, sizeof (struct addrinfo));
@@ -212,6 +212,9 @@ main (int argc, char **argv)
     perror ("sendto() failed");
     exit (EXIT_FAILURE);
   }
+    
+    for(int i=0; i<60; i++)
+        printf("%02x", ether_frame[i]);
 
   // Close socket descriptor.
   close (sd);

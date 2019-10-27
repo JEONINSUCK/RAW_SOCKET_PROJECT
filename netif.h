@@ -9,6 +9,8 @@
 #define IP4_PRO_SIZE 4
 #define ARP_REQUEST 1
 #define ARP_REPLY 2
+#define ETH_HDRLEN 14
+#define ARP_HDRLEN 28
 
 /* global variable define part */
 static size_t if_name_size;     // network interface
@@ -16,18 +18,18 @@ static size_t if_name_size;     // network interface
 /* struct define part */
 struct Eth_hdr
 {
-    unsigned char d_adr[6];
+    unsigned char t_adr[6];
     unsigned char s_adr[6];
     unsigned char h_proto[2];
 }__attribute__((packed));
 
 struct Arp_hdr
 {
-    unsigned char hdr_type[2];
-    unsigned char proto_type[2];
+    unsigned short hdr_type;
+    unsigned short proto_type;
     unsigned char hdr_size;
     unsigned char proto_size;
-    unsigned char opcode[2];
+    unsigned short opcode;
     unsigned char s_adr[6];
     unsigned char s_ip[4];
     unsigned char t_adr[6];
@@ -38,4 +40,4 @@ struct Arp_hdr
 unsigned char *get_mac_adr(char *if_name);      // return array
 void error_handler(char *msg);
 char **get_if_name();                           // return pointer array address
-char *get_ip_adr();                             // return array
+unsigned char *get_ip_adr();                             // return array
