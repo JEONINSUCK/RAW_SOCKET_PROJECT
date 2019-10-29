@@ -41,3 +41,5 @@ unsigned char *get_mac_adr(char *if_name);      // return array
 void error_handler(char *msg);
 char **get_if_name();                           // return pointer array address
 unsigned char *get_ip_adr();                             // return array
+int get_if_index(char *if_name);                // return int
+char *ip_conv(char *ip);               // return pointer array

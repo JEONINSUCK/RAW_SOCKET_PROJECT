@@ -3,15 +3,15 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 
+#include "netif.h"
+
 
 int main(int argc, char *argv[])
 {
-    int a = 0x0806;
+    char *test;
+    test = ip_conv("127.0.0.1");
     
-    printf("0x%x\n", a & 255);
-    printf("0x%x\n", a  255);
-    
-    
+    printf("%02x %02x %02x %02x\n", test[0],test[1],test[2],test[3]);
     
     
     return 0;
