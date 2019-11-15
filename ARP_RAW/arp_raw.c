@@ -46,6 +46,12 @@ int main(int argc, char *argv[])
         {
             break;
         }
+        else if(r == -1)
+        {
+            printf("%s is not exist\n", argv[2]);
+            close(sock);
+            exit(0);
+        }
     }
     close(sock);
     return 0;
@@ -232,10 +238,20 @@ int arp_bind(int if_index, int *sock)
     if(debugMode == 1)
         printf("arp_bind() start\n");
     struct sockaddr_ll sll;
+    struct timeval optVal = {3, 0};
+    
+    int success;
+    int optLen = sizeof(optVal);
     
     memset(&sll, 0, sizeof(struct sockaddr_ll));
     
     *sock = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ARP));
+    
+    success = setsockopt(*sock, SOL_SOCKET, SO_RCVTIMEO, &optVal, sizeof(optVal));
+    if(success == -1)
+        error_handler("setsockopt error\n");
+    
+    
     if(sock < 0)
         return -1;
     
