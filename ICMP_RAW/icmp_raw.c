@@ -6,13 +6,23 @@
 #include "netif.h"
 
 int ip_init(struct ip *ip_p, char *if_name);
+void error_handler(char *msg);
 
 int main(int argc, char *argv[])
 {
     struct ip ip_hdr;
     
+    char *ip;
+    int status;
+
+    if(dns_to_ip("google.com", &ip) == -1)
+        error_handler("dns_to_ip() error in main method");
+
+    printf("%s\n", ip);
+
+    // printf("%s\n", &ip);
     /* ip header set */
-    ip_init(&ip_hdr,"ens33");
+    // ip_init(&ip_hdr,"ens33");
 
 
     return 0;
@@ -36,4 +46,10 @@ int ip_init(struct ip *ip_p, char *if_name)
     ip_p->ip_off = htons(0);
     ip_p->ip_ttl = 255;
     ip_p->ip_p = IPPROTO_ICMP;
+}
+
+void error_handler(char *msg)
+{
+    printf("%s\n", msg);
+    exit(EXIT_FAILURE);
 }

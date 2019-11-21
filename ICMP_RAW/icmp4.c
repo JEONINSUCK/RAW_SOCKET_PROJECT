@@ -70,7 +70,7 @@ main (int argc, char **argv)
   ip_flags = allocate_intmem (4);
 
   // Interface to send packet through.
-  strcpy (interface, "eth0");
+  strcpy (interface, "ens33");
 
   // Submit request for a socket descriptor to look up interface.
   if ((sd = socket (AF_INET, SOCK_RAW, IPPROTO_RAW)) < 0) {
@@ -91,7 +91,7 @@ main (int argc, char **argv)
   printf ("Index for interface %s is %i\n", interface, ifr.ifr_ifindex);
 
   // Source IPv4 address: you need to fill this out
-  strcpy (src_ip, "192.168.1.132");
+  strcpy (src_ip, "172.16.255.131");
 
   // Destination URL or IPv4 address: you need to fill this out
   strcpy (target, "www.google.com");
