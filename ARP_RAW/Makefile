@@ -17,3 +17,4 @@ netif.o:netif.c
 clean:
 	rm -rf $(TARGET)
 	rm -rf *.o
+	rm -rf ._*.*

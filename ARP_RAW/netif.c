@@ -8,8 +8,35 @@
 #include <netinet/in.h>         // socket typedef
 #include <ifaddrs.h>            // struct ifaddrs
 #include <arpa/inet.h>           // inet_ntoa()
+#include <netdb.h>
 
 #include "netif.h"
+
+int dns_to_ip(char *addr, char **dst)
+{
+    struct addrinfo hints;
+    struct addrinfo *res;
+    struct sockaddr_in *ip;
+
+    int status;
+
+    *dst = (char *)malloc(sizeof(char) * 20);
+
+    memset(&hints, 0, sizeof(struct addrinfo));
+    hints.ai_family = AF_INET;
+    hints.ai_socktype = SOCK_STREAM;
+
+    if(status = getaddrinfo(addr, 0, &hints, &res) != 0)
+        return -1;
+
+    ip = (struct sockaddr_in *) res->ai_addr;
+    if(inet_ntop(AF_INET, &(ip->sin_addr), *dst, IPv4_LEN) == NULL)
+        return -1;
+    
+    freeaddrinfo(res);
+    return 0;
+
+}
 
 char *ip_conv(char *ip)
 {
