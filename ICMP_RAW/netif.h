@@ -13,6 +13,7 @@
 #define ARP_HDRLEN 28
 #define IP_HDRLEN 20
 #define ICMP_HDRLEN 8
+#define IPv4_LEN 16
 
 /* global variable define part */
 static size_t if_name_size;     // network interface
@@ -45,3 +46,4 @@ char **get_if_name();                           // return pointer array address
 unsigned char *get_ip_adr();                             // return array
 int get_if_index(char *if_name);                // return int
 char *ip_conv(char *ip);               // return pointer array
+int dns_to_ip(char *addr, char **dst);                    // return array address
