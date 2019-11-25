@@ -32,7 +32,7 @@ int dns_to_ip(char *addr, char **dst)
     ip = (struct sockaddr_in *) res->ai_addr;
     if(inet_ntop(AF_INET, &(ip->sin_addr), *dst, IPv4_LEN) == NULL)
         return -1;
-    
+
     freeaddrinfo(res);
     return 0;
 

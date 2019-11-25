@@ -2,40 +2,41 @@
 #include <stdlib.h>
 #include <netinet/ip.h>                     // struct ip
 #include <netinet/in.h>                     // IPPROTO_ICMP
+#include <arpa/inet.h>
 
 #include "netif.h"
 
-int ip_init(struct ip *ip_p, char *if_name);
+#define DEBUGMODE 1
+
+int ip_init(struct ip *ip_p, char *if_name, char *dst_ip);
 void error_handler(char *msg);
 
 int main(int argc, char *argv[])
 {
     struct ip ip_hdr;
-    
-    char *ip;
-    int status;
 
-    if(dns_to_ip("google.com", &ip) == -1)
-        error_handler("dns_to_ip() error in main method");
+    // if(argc < 3)
+    // {
+    //     printf("icmp_raw <INTERFACE> <DST_IP>\n");
+    //     exit(EXIT_FAILURE);   
+    // }
 
-    printf("%s\n", ip);
-
-    // printf("%s\n", &ip);
     /* ip header set */
-    // ip_init(&ip_hdr,"ens33");
-
+    ip_init(&ip_hdr,"ens33", "172.16.255.1");
 
     return 0;
 }
 
-int ip_init(struct ip *ip_p, char *if_name)
+int ip_init(struct ip *ip_p, char *if_name, char *dst_ip)
 {
-    unsigned char *src_ip_buf;
-    
+    if(DEBUGMODE == 1)
+        printf("ip_init() start\n");
+
+    char *src_ip_buf;
     int if_index;
     int checksum;
     
-    src_ip_buf = get_ip_adr(if_name);
+    src_ip_buf = (char*)get_ip_adr(if_name);
     
     /* IP header */
     ip_p->ip_v = 4;
@@ -46,6 +47,13 @@ int ip_init(struct ip *ip_p, char *if_name)
     ip_p->ip_off = htons(0);
     ip_p->ip_ttl = 255;
     ip_p->ip_p = IPPROTO_ICMP;
+
+    if(dns_to_ip("google.com", &dst_ip) == -1)
+        return -1;
+    if((inet_pton(AF_INET, src_ip_buf, &(ip_p->ip_src))) != 1)
+        return -1;
+    if((inet_pton(AF_INET, dst_ip, &(ip_p->ip_dst))) != 1)
+        return -1;
 }
 
 void error_handler(char *msg)
