@@ -94,7 +94,7 @@ main (int argc, char **argv)
   strcpy (src_ip, "172.16.255.131");
 
   // Destination URL or IPv4 address: you need to fill this out
-  strcpy (target, "www.google.com");
+  strcpy (target, "172.16.255.1");
 
   // Fill out hints for getaddrinfo().
   memset (&hints, 0, sizeof (struct addrinfo));
@@ -275,11 +275,14 @@ checksum (uint16_t *addr, int len)
     count -= 2;
   }
 
+  
   // Add left-over byte, if any.
   if (count > 0) {
     sum += *(uint8_t *) addr;
   }
 
+  
+  
   // Fold 32-bit sum into 16 bits; we lose information by doing this,
   // increasing the chances of a collision.
   // sum = (lower 16 bits) + (upper 16 bits shifted right 16 bits)
@@ -287,9 +290,10 @@ checksum (uint16_t *addr, int len)
     sum = (sum & 0xffff) + (sum >> 16);
   }
 
+  printf("%x\n", sum);
   // Checksum is one's compliment of sum.
   answer = ~sum;
-
+  printf("%x\n",answer);
   return (answer);
 }
 
